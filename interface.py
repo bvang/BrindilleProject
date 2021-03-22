@@ -65,6 +65,8 @@ liste_fichiers = Frame(fenetre, bg='green')
 liste_fichiers.config(width=550,height=300)
 liste_fichiers.place(x=70,y=110)
 
+grille
+
 
 
 fenetre.mainloop()
