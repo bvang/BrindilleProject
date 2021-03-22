@@ -65,8 +65,22 @@ liste_fichiers = Frame(fenetre, bg='green')
 liste_fichiers.config(width=550,height=300)
 liste_fichiers.place(x=70,y=110)
 
-grille
+lbx_1 = Listbox(liste_fichiers,width=16,height=18)
+lbx_1.place(x=0,y=0)
+lbx_1.insert(0,"Video.mp4")
+lbx_1.insert(1,"PAD.mxf")
+lbx_1.insert(2,"Livraison PAD.mov")
 
+lbx_2 = Listbox(liste_fichiers,width=33,height=18)
+lbx_2.place(x=145,y=0)
+lbx_2.insert(0,"Conforme XDCAM 4:2:2")
+lbx_2.insert(1,"Non conforme")
+lbx_2.insert(2,"Conforme XDCAM 4:2:2")
 
+lbx_3 = Listbox(liste_fichiers,width=10,height=18)
+lbx_3.place(x=200,y=0)
+lbx_3.insert(0,"07/10/21")
+lbx_3.insert(1,"04/12/93")
+lbx_3.insert(2,"11/08/24")
 
 fenetre.mainloop()
