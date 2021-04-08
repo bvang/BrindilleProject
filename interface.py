@@ -61,7 +61,7 @@ bouton_6=Button(fenetre, text="Effacer la liste", command=askdirectory, bg="blue
 bouton_6.place(x=525, y=420)
 
 #Liste des fichiers
-liste_fichiers = Frame(fenetre, bg='green')
+"""liste_fichiers = Frame(fenetre, bg='green')
 liste_fichiers.config(width=550,height=300)
 liste_fichiers.place(x=70,y=110)
 
@@ -81,46 +81,51 @@ lbx_3 = Listbox(liste_fichiers,width=12,height=18)
 lbx_3.place(x=443,y=0)
 lbx_3.insert(0,"07/10/21")
 lbx_3.insert(1,"04/12/93")
-lbx_3.insert(2,"11/08/24")
-
+lbx_3.insert(2,"11/08/24")"""
 
 
 """Tableau liste des fichiers et informations"""
-"""class ComboBox(Frame):
-    def __init__(self, boss, item='', items=[], command='', width=10,
-                 listSize=5):
-        self.items = items
-        self.command = command
-        self.item = item
-        self.entree = Entry(self, width=width)
-        self.entree.insert(END, item)
-        self.entree.bind("<Return>", self.sortieE)
-        self.entree.pack(side=TOP)
-        cadreLB = Frame(self)
-        self.bListe = Listbox(cadreLB, height=listSize, width=width - 1)
-        scrol = Scrollbar(cadreLB, command=self.bListe.yview)
-        self.bListe.config(yscrollcommand=scrol.set)
-        self.bListe.bind("<ButtonRelease-1>", self.sortieL)
-        self.bListe.pack(side=LEFT)
-        scrol.pack(expand=YES, fill=Y)
-        cadreLB.pack()
+class Combobox(Frame):
 
-        for it in items:
-            self.bListe.insert(END, it)
+    def __init__(self,boss,nom=[],examen=[],date=[],command='',width=10,listSize=5):
+        Frame.__init__(self,boss)
+        self.nom = nom
+        self.examen = examen
+        self.date = date
 
-            if __name__ == "__main__":  # --- Programme de test ---
-                def changeCoul(col):
-                    fenetre.configure(background=col)
+        analyse = Frame(self)
+        self.bliste = Listbox(analyse,height=listSize,width=width-1)
+        scrol = Scrollbar(analyse, command=self.bliste.yview)
+        self.bliste.config(yscrollcommand=scrol.set)
+        self.bliste.pack(side=LEFT)
+        scrol.pack(expand=YES,fill=Y)
+        analyse.pack()
 
+        for it in nom:
+            self.bliste.insert(END, it)
 
-                couleurs = ('navy', 'royal blue', 'steelblue1', 'cadet blue',
-                            'lawn green', 'forest green', 'yellow', 'dark red',
-                            'grey80', 'grey60', 'grey40', 'grey20', 'pink', 'red')
+        for it in examen:
+            self.bliste.insert(END, it)
 
-                Liste_fichiers = ComboBox(fenetre, item="néant", items=couleurs, command=changeCoul,
-                                          width=30, listSize=6)
-                Liste_fichiers.grid(row=1, columnspan=2, padx=10, pady=10)
+if __name__ == "__main__":
 
-"""
+    def changeLabel():
+        lab.configure(text=combo.get())
+
+    fichier = ('fichier 1', 'fichier 2', 'fichier 3', 'fichier 4',
+                'fichier 5', 'fichier 6', 'fichier 7', 'fichier 8',
+                'fichier 9', 'fichier 10', 'fichier 11', 'fichier 12',
+                'fichier 13','fichier 14','fichier 15','fichier 16','fichier 1', 'fichier 2', 'fichier 3', 'fichier 4',
+                'fichier 5', 'fichier 6', 'fichier 7', 'fichier 8',
+                'fichier 9', 'fichier 10', 'fichier 11', 'fichier 12',
+                'fichier 13','fichier 14','fichier 15','fichier 16')
+
+    conformite = ('non conforme','non conforme','non conforme',
+                  'conforme','conforme')
+
+    liste_fichiers = Combobox(fenetre, nom=fichier, width=62, listSize=17)
+    liste_fichiers.grid(row=1,columnspan=2)
+    liste_fichiers.place(x=70,y=110)
+
 
 fenetre.mainloop()
