@@ -11,6 +11,8 @@ from pathlib import Path
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PRORES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # General
+from MediaInfo import track
+
 prores_format_general = "MPEG-4"  # à ajouter
 prores_type = "QuickTime"
 
@@ -137,6 +139,60 @@ def prores_verif(filename):
                 continue
 
 
+def Filerapport():
+#myFile = open("rapport2.txt", "w+")
+    for file in glob.glob("*.mov"):
+        print("Le nom du fichier est :", file)
+        media_info = MediaInfo.parse(file)
+        for track in media_info.tracks:
+            #########VIDEO################
+            if track.track_type == "Video":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n"
+                      .format(t=track))
+
+
+            ################GENERAL##################
+            elif track.track_type == "General":
+                pprint(track.track_type)
+                print(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+
+            ################AUDIO##################
+            elif track.track_type == "Audio":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                      .format(t=track))
+
+
+            ################OTHER##################
+            elif track.track_type == "Other":
+                pprint(track.track_type)
+                print(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+
+myFile = open("cuppa2.txt", "w+")
+
+myFile.write("Le nom du fichier est :")
+
+myFile.write(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n".format(t= track))
+
+myFile.write(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+myFile.write(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                      .format(t=track))
+
+myFile.write(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+myFile.close()
+
+
 def mxf_verif():
     for file in glob.glob("*.mxf"):
         print("Le nom du fichier est :", file)
@@ -222,6 +278,8 @@ def mxf_verif():
                     return videoall_verif
 
 
+
+
 # Affichage
 fenetre = Tk()
 fenetre.title("Controle automatique des fichiers")
@@ -234,7 +292,7 @@ cadf.place(x=330, y=25)
 # Logo INA
 largeur = 50
 hauteur = 50
-image = PhotoImage(file="G:\Documents\GitHub\BrindilleProject\logo.png")
+image = PhotoImage(file="/Users/antoine/Documents/Brindille/BrindilleProject/logo.png")
 canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
 canvas.create_image(largeur / 2, hauteur / 2, image=image)
 canvas.place(x=635, y=15)
@@ -327,8 +385,9 @@ bouton_4 = Button(fenetre, text="Choisir ...", command=choose_folder_prores, bg=
 bouton_4.place(x=545, y=540)
 
 # Bouton Générer un rapport ...
-bouton_5 = Button(fenetre, text="Générer un rapport ...", command=askdirectory, bg="cyan", fg="gray")
+bouton_5 = Button(fenetre, text="Générer un rapport ...", command=Filerapport(), bg="cyan", fg="gray")
 bouton_5.place(x=370, y=420)
+# ajouter commande pour generer la commande
 
 # Bouton Effacer la liste
 bouton_6 = Button(fenetre, text="Effacer la liste", command=askdirectory, bg="blue", fg="gray")
@@ -341,7 +400,7 @@ liste_fichiers.place(x=70, y=110)
 
 lbx_1 = Listbox(liste_fichiers, width=16, height=18)
 lbx_1.place(x=0, y=0)
-onlyfiles = [f for f in listdir("G:/Documents/testFichier") if isfile(join("G:/Documents/testFichier", f))]
+onlyfiles = [f for f in listdir("/Users/antoine/Desktop/testFichier") if isfile(join("/Users/antoine/Desktop/testFichier", f))]
 lbx_1.insert(0, browse_button)
 lbx_1.insert(1, onlyfiles)
 lbx_1.insert(2, "Livraison PAD.mov")
@@ -396,4 +455,10 @@ lbx_3.insert(2, "11/08/24")
 
 """
 
+
+
+
 fenetre.mainloop()
+
+
+
