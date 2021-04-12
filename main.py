@@ -3,11 +3,16 @@ from pymediainfo import MediaInfo
 import glob, os
 from os import listdir
 from os.path import isfile, join
+from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askdirectory
 from tkinter import filedialog
 import shutil
-from pathlib import Path
+from datetime import date
+from datetime import datetime
+import time
+
+from datetime import datetime
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PRORES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # General
@@ -59,17 +64,20 @@ mxf_timecode = "00:00:00:00"
 def prores_verif(filename):
     os.chdir(filename)
     for file in glob.glob("*.mov"):
+        ts = time.time()
+        now = datetime.fromtimestamp(ts)
         print("Le nom du fichier est :", file)
-        media_info = MediaInfo.parse(file)
+        # filepath = (filename + '/' + file)
+        media_info = MediaInfo.parse(filename + '/'+ file)
         for track in media_info.tracks:
             #########VIDEO################
             if track.track_type == "Video":
                 pprint(track.track_type)
-                print(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
-                      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
-                      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
-                      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n"
-                      .format(t=track))
+                #print(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                #      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                #      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                #      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n"
+                #      .format(t=track))
                 if track.format == prores_compression and track.format_profile == prores_profile \
                         and track.sampled_width == prores_width and track.sampled_height == prores_height \
                         and track.other_frame_rate == prores_framerate and track.other_scan_type == prores_scan_type \
@@ -85,7 +93,7 @@ def prores_verif(filename):
             ################GENERAL##################
             elif track.track_type == "General":
                 pprint(track.track_type)
-                print(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+                #print(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
                 if track.format_profile == prores_type and track.format == prores_format_general:
                     general_prores = True
                     continue
@@ -97,8 +105,8 @@ def prores_verif(filename):
             ################AUDIO##################
             elif track.track_type == "Audio":
                 pprint(track.track_type)
-                print(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
-                      .format(t=track))
+                #print(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                #      .format(t=track))
                 if track.format == "PCM" and track.other_sampling_rate == ['48.0 kHz']:
                     # print("\npartie Audio conforme PRORES HQ")
                     audio_prores = True
@@ -111,11 +119,13 @@ def prores_verif(filename):
             ################OTHER##################
             elif track.track_type == "Other":
                 pprint(track.track_type)
-                print(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+                #print(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
                 if track.time_code_of_first_frame == prores_timecode:
                     other_prores = True
                     if video_prores and audio_prores and general_prores and other_prores:
                         print(file, ": VIDEO CONFORME PRORES HQ\n")
+                        moveto_prores(filename, file)
+                        cadre.insert("", 'end', text="L1", values=(file, "Conforme", now))
                         # videoall_verif = True
                         # return videoall_verif
                         continue
@@ -123,17 +133,23 @@ def prores_verif(filename):
                         print(file, ": VIDEO NON CONFORME PRORES HQ\n")
                         # videoall_verif = False
                         # return videoall_verif
+                        moveto_refused(filename, file)
+                        cadre.insert("", 'end', text="L1", values=(file, "Non conforme", now))
                         continue
                 else:
                     print("partie Other non conforme PRORES HQ\n")
                     other_prores = False
                     print(file, ": VIDEO NON CONFORME PRORES HQ\n")
+                    moveto_refused(filename, file)
+                    cadre.insert("", 'end', text="L1", values=(file, "Non conforme", now))
                     # videoall_verif = False
                     # return videoall_verif
                     continue
 
             elif not track.track_type == "General" or not track.track_type == "Other" or not track.track_type == "Audio":
                 print(file, ": VIDEO NON CONFORME PRORES HQ\n")
+                moveto_refused(filename, file)
+                cadre.insert("", 'end', text="L1", values=(file, "Non conforme", now))
                 continue
 
 
@@ -239,16 +255,6 @@ canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlig
 canvas.create_image(largeur / 2, hauteur / 2, image=image)
 canvas.place(x=635, y=15)
 
-nom = Label(fenetre, text="Nom")
-nom.place(x=100, y=85)
-
-statut = Label(fenetre, text="Statut")
-statut.place(x=350, y=85)
-
-date = Label(fenetre, text="Date")
-date.place(x=550, y=85)
-
-
 def browsefolder():
     os.chdir("G:/Documents/testFichier")
     for file in glob.glob("*.mov"):
@@ -259,31 +265,30 @@ def browsefolder():
 
 def browse_button():
     global folder_path
-    filename = filedialog.askdirectory()
+    filename = filedialog.askdirectory(title='Select WatchFolder')
     folder_path.set(filename)
-    print(filename)
+    print("dossier watchfolder", filename)
     os.chdir(filename)
     prores_verif(filename)
     dossier_watchfolder = Label(fenetre, text=filename)
     dossier_watchfolder.place(x=10, y=570)
-    for file in glob.glob("*.mov"):
-        print("Le nom du fichier est :", file)
-        return file
 
 
 def choose_folder_refused():
     global folder_path
-    filename = filedialog.askdirectory()
-    folder_path.set(filename)
-    print(filename)
-    os.chdir(filename)
-    dossier_fichier_refuses_confirm = Label(fenetre, text=filename)
+    global filename_refused
+    filename_refused = filedialog.askdirectory(title='Select Refused Folder')
+    folder_path.set(filename_refused)
+    print("Dossier refuse", filename_refused)
+    os.chdir(filename_refused)
+    dossier_fichier_refuses_confirm = Label(fenetre, text=filename_refused)
     dossier_fichier_refuses_confirm.place(x=150, y=570)
+    return filename_refused
 
 
 def choose_folder_xdcam():
     global folder_path
-    filename = filedialog.askdirectory()
+    filename = filedialog.askdirectory(title='Select XDCAM Folder')
     folder_path.set(filename)
     print(filename)
     os.chdir(filename)
@@ -293,13 +298,32 @@ def choose_folder_xdcam():
 
 def choose_folder_prores():
     global folder_path
-    filename = filedialog.askdirectory()
+    filename = filedialog.askdirectory(title='Select Prores Folder')
     folder_path.set(filename)
     print(filename)
     os.chdir(filename)
     dossier_fichier_refuses_confirm = Label(fenetre, text=filename)
     dossier_fichier_refuses_confirm.place(x=500, y=570)
+    return filename
 
+
+def moveto_refused(filename, file):
+    source = (filename + '/' + file)
+    destination = (choose_folder_refused() + '/' + file)
+    shutil.move(source, destination)
+    print(file, "déplacé dans le dossier REFUSE")
+
+def moveto_prores (filename, file):
+    source = (filename + '/' + file)
+    destination = (choose_folder_prores() + '/' + file)
+    shutil.move(source, destination)
+    print(file, "déplacé dans le dossier PRORES CONFORME")
+
+
+def erase_list():
+    selected_item = cadre.selection()[0]
+    cadre.delete(selected_item)
+    fenetre.update()
 
 # Bouton Watchfolder
 folder_path = StringVar()
@@ -331,69 +355,35 @@ bouton_5 = Button(fenetre, text="Générer un rapport ...", command=askdirectory
 bouton_5.place(x=370, y=420)
 
 # Bouton Effacer la liste
-bouton_6 = Button(fenetre, text="Effacer la liste", command=askdirectory, bg="blue", fg="gray")
+bouton_6 = Button(fenetre, text="Effacer la liste", command=erase_list, bg="blue", fg="gray")
 bouton_6.place(x=525, y=420)
 
-# Liste des fichiers
-liste_fichiers = Frame(fenetre, bg='green')
-liste_fichiers.config(width=550, height=300)
-liste_fichiers.place(x=70, y=110)
-
-lbx_1 = Listbox(liste_fichiers, width=16, height=18)
-lbx_1.place(x=0, y=0)
-onlyfiles = [f for f in listdir("G:/Documents/testFichier") if isfile(join("G:/Documents/testFichier", f))]
-lbx_1.insert(0, browse_button)
-lbx_1.insert(1, onlyfiles)
-lbx_1.insert(2, "Livraison PAD.mov")
-
-lbx_2 = Listbox(liste_fichiers, width=33, height=18)
-lbx_2.place(x=145, y=0)
-lbx_2.insert(0, "Conforme XDCAM 4:2:2")
-lbx_2.insert(1, "Non conforme")
-lbx_2.insert(2, "Conforme XDCAM 4:2:2")
-
-lbx_3 = Listbox(liste_fichiers, width=12, height=18)
-lbx_3.place(x=443, y=0)
-lbx_3.insert(0, "07/10/21")
-lbx_3.insert(1, "04/12/93")
-lbx_3.insert(2, "11/08/24")
-
-"""Tableau liste des fichiers et informations"""
-"""class ComboBox(Frame):
-    def __init__(self, boss, item='', items=[], command='', width=10,
-                 listSize=5):
-        self.items = items
-        self.command = command
-        self.item = item
-        self.entree = Entry(self, width=width)
-        self.entree.insert(END, item)
-        self.entree.bind("<Return>", self.sortieE)
-        self.entree.pack(side=TOP)
-        cadreLB = Frame(self)
-        self.bListe = Listbox(cadreLB, height=listSize, width=width - 1)
-        scrol = Scrollbar(cadreLB, command=self.bListe.yview)
-        self.bListe.config(yscrollcommand=scrol.set)
-        self.bListe.bind("<ButtonRelease-1>", self.sortieL)
-        self.bListe.pack(side=LEFT)
-        scrol.pack(expand=YES, fill=Y)
-        cadreLB.pack()
-
-        for it in items:
-            self.bListe.insert(END, it)
-
-            if __name__ == "__main__":  # --- Programme de test ---
-                def changeCoul(col):
-                    fenetre.configure(background=col)
+##################HORODATAGE##################
 
 
-                couleurs = ('navy', 'royal blue', 'steelblue1', 'cadet blue',
-                            'lawn green', 'forest green', 'yellow', 'dark red',
-                            'grey80', 'grey60', 'grey40', 'grey20', 'pink', 'red')
+#onlyfiles = [f for f in listdir("G:/Documents/testFichier") if isfile(join("G:/Documents/testFichier", f))]
+# utiliser os.listdir(path)
 
-                Liste_fichiers = ComboBox(fenetre, item="néant", items=couleurs, command=changeCoul,
-                                          width=30, listSize=6)
-                Liste_fichiers.grid(row=1, columnspan=2, padx=10, pady=10)
+# Cadre + Scrol
+cadre = ttk.Treeview(fenetre,selectmode='browse')
+scrol = ttk.Scrollbar(orient="vertical",command=cadre.yview)
+cadre.configure(yscrollcommand=scrol.set)
 
-"""
+# Configuration du cadre
+cadre.place(x = 70, y = 110, width=550,height=293)
+cadre["columns"] = ("1", "2","3")
+cadre['show'] = 'headings'
+cadre.column("1", width=150)
+cadre.column("2", width=20, anchor='c')
+cadre.column("3", width=50, anchor='c')
+cadre.heading("1", text="Fichier")
+cadre.heading("2", text="Statut")
+cadre.heading("3", text="Date")
+c = "Conforme"
+nc = "Non conforme"
 
+
+
+
+# Fin du programme
 fenetre.mainloop()
