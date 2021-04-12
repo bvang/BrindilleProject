@@ -250,7 +250,7 @@ cadf.place(x=330, y=25)
 # Logo INA
 largeur = 50
 hauteur = 50
-image = PhotoImage(file="G:\Documents\GitHub\BrindilleProject\logo.png")
+image = PhotoImage(file="logo.png")
 canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
 canvas.create_image(largeur / 2, hauteur / 2, image=image)
 canvas.place(x=635, y=15)
