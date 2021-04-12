@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter.filedialog import askdirectory
 
 # Affichage
@@ -60,67 +61,48 @@ bouton_5.place(x=370, y=420)
 bouton_6=Button(fenetre, text="Effacer la liste", command=askdirectory, bg="blue",fg="gray")
 bouton_6.place(x=525, y=420)
 
-#Liste des fichiers
-liste_fichiers = Frame(fenetre, bg='green')
-liste_fichiers.config(width=550,height=300)
-liste_fichiers.place(x=70,y=110)
+# Cadre + Scrol
+cadre = ttk.Treeview(fenetre,selectmode='browse')
+scrol = ttk.Scrollbar(orient="vertical",command=cadre.yview)
+cadre.configure(yscrollcommand=scrol.set)
 
-lbx_1 = Listbox(liste_fichiers,width=16,height=18)
-lbx_1.place(x=0,y=0)
-lbx_1.insert(0,"Video.mp4")
-lbx_1.insert(1,"PAD.mxf")
-lbx_1.insert(2,"Livraison PAD.mov")
+# Configuration du cadre
+cadre.place(x = 70, y = 110, width=550,height=293)
+cadre["columns"] = ("1", "2","3")
+cadre['show'] = 'headings'
+cadre.column("1", width=150)
+cadre.column("2", width=20, anchor='c')
+cadre.column("3", width=50, anchor='c')
+cadre.heading("1", text="Fichier")
+cadre.heading("2", text="Statut")
+cadre.heading("3", text="Date")
+c = "Conforme"
+nc = "Non conforme"
 
-lbx_2 = Listbox(liste_fichiers,width=33,height=18)
-lbx_2.place(x=145,y=0)
-lbx_2.insert(0,"Conforme XDCAM 4:2:2")
-lbx_2.insert(1,"Non conforme")
-lbx_2.insert(2,"Conforme XDCAM 4:2:2")
+# Remplissage du cadre
+cadre.insert("",'end',text="L1",values=("Loup.mp4",c,"03/03/0303"))
+cadre.insert("",'end',text="L2",values=("Fleur.mov",nc,"12/12/1212"))
+cadre.insert("",'end',text="L3",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L4",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L5",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L6",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L7",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L8",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L9",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L10",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L11",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L12",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L13",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L14",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L15",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L16",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L17",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L18",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L19",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L20",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L21",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L22",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L23",values=("Tigre.mxf",nc,"12/12/1212"))
 
-lbx_3 = Listbox(liste_fichiers,width=12,height=18)
-lbx_3.place(x=443,y=0)
-lbx_3.insert(0,"07/10/21")
-lbx_3.insert(1,"04/12/93")
-lbx_3.insert(2,"11/08/24")
-
-
-
-"""Tableau liste des fichiers et informations"""
-"""class ComboBox(Frame):
-    def __init__(self, boss, item='', items=[], command='', width=10,
-                 listSize=5):
-        self.items = items
-        self.command = command
-        self.item = item
-        self.entree = Entry(self, width=width)
-        self.entree.insert(END, item)
-        self.entree.bind("<Return>", self.sortieE)
-        self.entree.pack(side=TOP)
-        cadreLB = Frame(self)
-        self.bListe = Listbox(cadreLB, height=listSize, width=width - 1)
-        scrol = Scrollbar(cadreLB, command=self.bListe.yview)
-        self.bListe.config(yscrollcommand=scrol.set)
-        self.bListe.bind("<ButtonRelease-1>", self.sortieL)
-        self.bListe.pack(side=LEFT)
-        scrol.pack(expand=YES, fill=Y)
-        cadreLB.pack()
-
-        for it in items:
-            self.bListe.insert(END, it)
-
-            if __name__ == "__main__":  # --- Programme de test ---
-                def changeCoul(col):
-                    fenetre.configure(background=col)
-
-
-                couleurs = ('navy', 'royal blue', 'steelblue1', 'cadet blue',
-                            'lawn green', 'forest green', 'yellow', 'dark red',
-                            'grey80', 'grey60', 'grey40', 'grey20', 'pink', 'red')
-
-                Liste_fichiers = ComboBox(fenetre, item="néant", items=couleurs, command=changeCoul,
-                                          width=30, listSize=6)
-                Liste_fichiers.grid(row=1, columnspan=2, padx=10, pady=10)
-
-"""
-
+# Fin du programme
 fenetre.mainloop()
