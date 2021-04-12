@@ -358,42 +358,4 @@ lbx_3.insert(0, "07/10/21")
 lbx_3.insert(1, "04/12/93")
 lbx_3.insert(2, "11/08/24")
 
-"""Tableau liste des fichiers et informations"""
-"""class ComboBox(Frame):
-    def __init__(self, boss, item='', items=[], command='', width=10,
-                 listSize=5):
-        self.items = items
-        self.command = command
-        self.item = item
-        self.entree = Entry(self, width=width)
-        self.entree.insert(END, item)
-        self.entree.bind("<Return>", self.sortieE)
-        self.entree.pack(side=TOP)
-        cadreLB = Frame(self)
-        self.bListe = Listbox(cadreLB, height=listSize, width=width - 1)
-        scrol = Scrollbar(cadreLB, command=self.bListe.yview)
-        self.bListe.config(yscrollcommand=scrol.set)
-        self.bListe.bind("<ButtonRelease-1>", self.sortieL)
-        self.bListe.pack(side=LEFT)
-        scrol.pack(expand=YES, fill=Y)
-        cadreLB.pack()
-
-        for it in items:
-            self.bListe.insert(END, it)
-
-            if __name__ == "__main__":  # --- Programme de test ---
-                def changeCoul(col):
-                    fenetre.configure(background=col)
-
-
-                couleurs = ('navy', 'royal blue', 'steelblue1', 'cadet blue',
-                            'lawn green', 'forest green', 'yellow', 'dark red',
-                            'grey80', 'grey60', 'grey40', 'grey20', 'pink', 'red')
-
-                Liste_fichiers = ComboBox(fenetre, item="néant", items=couleurs, command=changeCoul,
-                                          width=30, listSize=6)
-                Liste_fichiers.grid(row=1, columnspan=2, padx=10, pady=10)
-
-"""
-
 fenetre.mainloop()

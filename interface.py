@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter.filedialog import askdirectory
 
 # Affichage
@@ -60,72 +61,48 @@ bouton_5.place(x=370, y=420)
 bouton_6=Button(fenetre, text="Effacer la liste", command=askdirectory, bg="blue",fg="gray")
 bouton_6.place(x=525, y=420)
 
-#Liste des fichiers
-"""liste_fichiers = Frame(fenetre, bg='green')
-liste_fichiers.config(width=550,height=300)
-liste_fichiers.place(x=70,y=110)
+# Cadre + Scrol
+cadre = ttk.Treeview(fenetre,selectmode='browse')
+scrol = ttk.Scrollbar(orient="vertical",command=cadre.yview)
+cadre.configure(yscrollcommand=scrol.set)
 
-lbx_1 = Listbox(liste_fichiers,width=16,height=18)
-lbx_1.place(x=0,y=0)
-lbx_1.insert(0,"Video.mp4")
-lbx_1.insert(1,"PAD.mxf")
-lbx_1.insert(2,"Livraison PAD.mov")
+# Configuration du cadre
+cadre.place(x = 70, y = 110, width=550,height=293)
+cadre["columns"] = ("1", "2","3")
+cadre['show'] = 'headings'
+cadre.column("1", width=150)
+cadre.column("2", width=20, anchor='c')
+cadre.column("3", width=50, anchor='c')
+cadre.heading("1", text="Fichier")
+cadre.heading("2", text="Statut")
+cadre.heading("3", text="Date")
+c = "Conforme"
+nc = "Non conforme"
 
-lbx_2 = Listbox(liste_fichiers,width=33,height=18)
-lbx_2.place(x=145,y=0)
-lbx_2.insert(0,"Conforme XDCAM 4:2:2")
-lbx_2.insert(1,"Non conforme")
-lbx_2.insert(2,"Conforme XDCAM 4:2:2")
+# Remplissage du cadre
+cadre.insert("",'end',text="L1",values=("Loup.mp4",c,"03/03/0303"))
+cadre.insert("",'end',text="L2",values=("Fleur.mov",nc,"12/12/1212"))
+cadre.insert("",'end',text="L3",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L4",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L5",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L6",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L7",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L8",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L9",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L10",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L11",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L12",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L13",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L14",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L15",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L16",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L17",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L18",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L19",values=("Tigre.mxf",c,"12/12/1212"))
+cadre.insert("",'end',text="L20",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L21",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L22",values=("Tigre.mxf",nc,"12/12/1212"))
+cadre.insert("",'end',text="L23",values=("Tigre.mxf",nc,"12/12/1212"))
 
-lbx_3 = Listbox(liste_fichiers,width=12,height=18)
-lbx_3.place(x=443,y=0)
-lbx_3.insert(0,"07/10/21")
-lbx_3.insert(1,"04/12/93")
-lbx_3.insert(2,"11/08/24")"""
-
-
-"""Tableau liste des fichiers et informations"""
-class Combobox(Frame):
-
-    def __init__(self,boss,nom=[],examen=[],date=[],command='',width=10,listSize=5):
-        Frame.__init__(self,boss)
-        self.nom = nom
-        self.examen = examen
-        self.date = date
-
-        analyse = Frame(self)
-        self.bliste = Listbox(analyse,height=listSize,width=width-1)
-        scrol = Scrollbar(analyse, command=self.bliste.yview)
-        self.bliste.config(yscrollcommand=scrol.set)
-        self.bliste.pack(side=LEFT)
-        scrol.pack(expand=YES,fill=Y)
-        analyse.pack()
-
-        for it in nom:
-            self.bliste.insert(END, it)
-
-        for it in examen:
-            self.bliste.insert(END, it)
-
-if __name__ == "__main__":
-
-    def changeLabel():
-        lab.configure(text=combo.get())
-
-    fichier = ('fichier 1', 'fichier 2', 'fichier 3', 'fichier 4',
-                'fichier 5', 'fichier 6', 'fichier 7', 'fichier 8',
-                'fichier 9', 'fichier 10', 'fichier 11', 'fichier 12',
-                'fichier 13','fichier 14','fichier 15','fichier 16','fichier 1', 'fichier 2', 'fichier 3', 'fichier 4',
-                'fichier 5', 'fichier 6', 'fichier 7', 'fichier 8',
-                'fichier 9', 'fichier 10', 'fichier 11', 'fichier 12',
-                'fichier 13','fichier 14','fichier 15','fichier 16')
-
-    conformite = ('non conforme','non conforme','non conforme',
-                  'conforme','conforme')
-
-    liste_fichiers = Combobox(fenetre, nom=fichier, width=62, listSize=17)
-    liste_fichiers.grid(row=1,columnspan=2)
-    liste_fichiers.place(x=70,y=110)
-
-
+# Fin du programme
 fenetre.mainloop()
