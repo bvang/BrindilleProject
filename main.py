@@ -125,7 +125,7 @@ def prores_verif(filename):
                     if video_prores and audio_prores and general_prores and other_prores:
                         print(file, ": VIDEO CONFORME PRORES HQ\n")
                         moveto_prores(filename, file)
-                        cadre.insert("", 'end', text="L1", values=(file, "Conforme", now))
+                        cadre.insert("", 'end', text="L1", values=(file, "Conforme PRORES HQ", now))
                         # videoall_verif = True
                         # return videoall_verif
                         continue
@@ -237,15 +237,15 @@ def mxf_verif():
                     videoall_verif = False
                     return videoall_verif
 
-
 # Affichage
 fenetre = Tk()
 fenetre.title("Controle automatique des fichiers")
 fenetre.minsize(700, 600)
 fenetre['bg'] = 'white'
+
 # Titre
 cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 20))
-cadf.place(x=330, y=25)
+cadf.place(x=280, y=25)
 
 # Logo INA
 largeur = 50
@@ -261,7 +261,6 @@ def browsefolder():
         print("Le nom du fichier est :", file)
         filedialog.askopenfilename(initialdir="/", title="Select a File",
                                    filetype=(("jpeg files", "*.jpg"), ("all files", "*.*")))
-
 
 def browse_button():
     global folder_path
@@ -321,9 +320,10 @@ def moveto_prores (filename, file):
 
 
 def erase_list():
-    selected_item = cadre.selection()[0]
-    cadre.delete(selected_item)
-    fenetre.update()
+    x = cadre.get_children()
+    for item in x:
+        cadre.delete()
+        """fenetre.update()"""
 
 # Bouton Watchfolder
 folder_path = StringVar()
@@ -351,15 +351,14 @@ bouton_4 = Button(fenetre, text="Choisir ...", command=choose_folder_prores, bg=
 bouton_4.place(x=545, y=540)
 
 # Bouton Générer un rapport ...
-bouton_5 = Button(fenetre, text="Générer un rapport ...", command=askdirectory, bg="cyan", fg="gray")
+bouton_5 = Button(fenetre, text="Générer un rapport ...", command=askdirectory, bg="grey")
 bouton_5.place(x=370, y=420)
 
 # Bouton Effacer la liste
-bouton_6 = Button(fenetre, text="Effacer la liste", command=erase_list, bg="blue", fg="gray")
+bouton_6 = Button(fenetre, text="Effacer la liste", command=erase_list, bg="grey")
 bouton_6.place(x=525, y=420)
 
 ##################HORODATAGE##################
-
 
 #onlyfiles = [f for f in listdir("G:/Documents/testFichier") if isfile(join("G:/Documents/testFichier", f))]
 # utiliser os.listdir(path)
@@ -379,11 +378,6 @@ cadre.column("3", width=50, anchor='c')
 cadre.heading("1", text="Fichier")
 cadre.heading("2", text="Statut")
 cadre.heading("3", text="Date")
-c = "Conforme"
-nc = "Non conforme"
-
-
-
 
 # Fin du programme
 fenetre.mainloop()
