@@ -322,7 +322,7 @@ def moveto_prores (filename, file):
 def erase_list():
     x = cadre.get_children()
     for item in x:
-        cadre.delete()
+        cadre.delete(item)
         """fenetre.update()"""
 
 # Bouton Watchfolder
