@@ -4,6 +4,7 @@ import glob, os
 from os import listdir
 from os.path import isfile, join
 from tkinter import ttk
+import tkinter as tk
 from tkinter import *
 from tkinter.filedialog import askdirectory
 from tkinter import filedialog
@@ -241,11 +242,13 @@ def mxf_verif():
 fenetre = Tk()
 fenetre.title("Controle automatique des fichiers")
 fenetre.minsize(700, 600)
+fenetre.maxsize(700, 600)
 fenetre['bg'] = 'white'
 
 # Titre
 cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 20))
-cadf.place(x=270, y=25)
+cadf.configure(padx=20)
+cadf.place(x=300, y=25)
 
 # Logo INA
 largeur = 50
@@ -325,6 +328,34 @@ def erase_list():
         cadre.delete(item)
         """fenetre.update()"""
 
+def rapport():
+    fenetre_rapport = Tk()
+    fenetre_rapport.title("Entrer le nom de votre rapport")
+    fenetre_rapport.minsize(300, 200)
+    fenetre_rapport.maxsize(300,200)
+    fenetre_rapport['bg'] = 'white'
+
+    cadf2 = Label(fenetre_rapport, text="Entrer le nom de votre rapport", font=("arial", 15))
+    cadf2.place(x=100,y=25,anchor='c')
+
+    DossierRapport = Label(fenetre_rapport, text="Dossier du rapport")
+    DossierRapport.place(x=20, y=50)
+    bouton_dossier = Button(fenetre_rapport, text="Choisir ...", command=askdirectory, bg="grey")
+    bouton_dossier.place(x=200, y=55)
+
+
+    def getEntry():
+        nomdufichier = myEntry.get()
+        print(nomdufichier)
+
+    myEntry = tk.Entry(fenetre_rapport,width=15)
+    myEntry.place(x=20,y=100)
+
+    bouton_entree = Button(fenetre_rapport, text="Entrée", command=getEntry, bg="grey")
+    bouton_entree.place(x=200,y=105)
+
+    fenetre_rapport.mainloop()
+
 # Bouton Watchfolder
 folder_path = StringVar()
 watchfolder = Label(fenetre, text="Watchfolder")
@@ -351,7 +382,7 @@ bouton_4 = Button(fenetre, text="Choisir ...", command=choose_folder_prores, bg=
 bouton_4.place(x=545, y=540)
 
 # Bouton Générer un rapport ...
-bouton_5 = Button(fenetre, text="Générer un rapport ...", command=askdirectory, bg="grey")
+bouton_5 = Button(fenetre, text="Générer un rapport ...", command=rapport, bg="grey")
 bouton_5.place(x=370, y=420)
 
 # Bouton Effacer la liste
