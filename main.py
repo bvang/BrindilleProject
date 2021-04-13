@@ -245,7 +245,7 @@ fenetre['bg'] = 'white'
 
 # Titre
 cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 20))
-cadf.place(x=280, y=25)
+cadf.place(x=270, y=25)
 
 # Logo INA
 largeur = 50
