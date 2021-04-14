@@ -326,11 +326,15 @@ def erase_list():
     x = cadre.get_children()
     for item in x:
         cadre.delete(item)
-        """fenetre.update()"""
+
+"""def dossier():
+    directory = filedialog.askdirectory(title='Select Directory')
+    Filerapport(directory)
+    return director"""
 
 def rapport():
     fenetre_rapport = Tk()
-    fenetre_rapport.title("Entrer le nom de votre rapport")
+    fenetre_rapport.title("Génerer un rapport")
     fenetre_rapport.minsize(300, 200)
     fenetre_rapport.maxsize(300,200)
     fenetre_rapport['bg'] = 'white'
@@ -338,14 +342,15 @@ def rapport():
     cadf2 = Label(fenetre_rapport, text="Entrer le nom de votre rapport", font=("arial", 15))
     cadf2.place(x=100,y=25,anchor='c')
 
-    DossierRapport = Label(fenetre_rapport, text="Dossier du rapport")
+    """DossierRapport = Label(fenetre_rapport, text="Dossier du rapport")
     DossierRapport.place(x=20, y=50)
     bouton_dossier = Button(fenetre_rapport, text="Choisir ...", command=askdirectory, bg="grey")
-    bouton_dossier.place(x=200, y=55)
+    bouton_dossier.place(x=200, y=55)"""
 
 
     def getEntry():
         nomdufichier = myEntry.get()
+        #Filerapport(nomdufichier)
         print(nomdufichier)
 
     myEntry = tk.Entry(fenetre_rapport,width=15)
@@ -355,6 +360,59 @@ def rapport():
     bouton_entree.place(x=200,y=105)
 
     fenetre_rapport.mainloop()
+
+
+"""def Filerapport(nomdufichier):
+    myFile = open("(nomdufichier).txt", "w+")
+    for file in glob.glob("*.mov"):
+        print("Le nom du fichier est :", file)
+        media_info = MediaInfo.parse(file)
+        for track in media_info.tracks:
+            #########VIDEO################
+            if track.track_type == "Video":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                          "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                          "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                          " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n"
+                          .format(t=track))
+
+                ################GENERAL##################
+            elif track.track_type == "General":
+                pprint(track.track_type)
+                print(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+
+                ################AUDIO##################
+            elif track.track_type == "Audio":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                          .format(t=track))
+
+
+                ################OTHER##################
+            elif track.track_type == "Other":
+                pprint(track.track_type)
+                print(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+
+myFile = open("cuppa2py.txt", "w+")
+
+myFile.write("Le nom du fichier est :")
+
+myFile.write(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n".format(t= track))
+
+myFile.write(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+myFile.write(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                      .format(t=track))
+
+myFile.write(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+myFile.close()"""
 
 # Bouton Watchfolder
 folder_path = StringVar()
