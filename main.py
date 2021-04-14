@@ -238,26 +238,6 @@ def mxf_verif():
                     videoall_verif = False
                     return videoall_verif
 
-# Affichage
-fenetre = Tk()
-fenetre.title("Controle automatique des fichiers")
-fenetre.minsize(700, 600)
-fenetre.maxsize(700, 600)
-fenetre['bg'] = 'white'
-
-# Titre
-cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 20))
-cadf.configure(padx=20)
-cadf.place(x=300, y=25)
-
-# Logo INA
-largeur = 50
-hauteur = 50
-image = PhotoImage(file="logo.png")
-canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
-canvas.create_image(largeur / 2, hauteur / 2, image=image)
-canvas.place(x=635, y=15)
-
 def browsefolder():
     os.chdir("G:/Documents/testFichier")
     for file in glob.glob("*.mov"):
@@ -413,6 +393,25 @@ myFile.write(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
 myFile.write(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
 
 myFile.close()"""
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~AFFICHAGE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fenetre = Tk()
+fenetre.title("Controle automatique des fichiers")
+fenetre.minsize(700, 600)
+fenetre.maxsize(700, 600)
+fenetre['bg'] = 'white'
+
+# Titre
+cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 20))
+cadf.configure(padx=20)
+cadf.place(x=300, y=25)
+
+# Logo INA
+largeur = 50
+hauteur = 50
+image = PhotoImage(file="logo.png")
+canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
+canvas.create_image(largeur / 2, hauteur / 2, image=image)
+canvas.place(x=635, y=15)
 
 # Bouton Watchfolder
 folder_path = StringVar()
