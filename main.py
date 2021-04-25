@@ -268,12 +268,12 @@ cadf = Label(fenetre, text="Contrôle automatique de fichiers", font=("arial", 2
 cadf.place(x=280, y=25)
 
 # Logo INA
-#largeur = 50
-#hauteur = 50
-#image = PhotoImage(file="logo.png")
-#canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
-#canvas.create_image(largeur / 2, hauteur / 2, image=image)
-#canvas.place(x=635, y=15)
+"""largeur = 50
+hauteur = 50
+image = PhotoImage(file="logo.png")
+canvas = Canvas(fenetre, width=largeur, height=hauteur, bg='blue', bd=0, highlightthickness=0)
+canvas.create_image(largeur / 2, hauteur / 2, image=image)
+canvas.place(x=635, y=15)"""
 
 
 def choose_folder_refused():
@@ -359,6 +359,58 @@ def rapport():
     bouton_entree.place(x=200,y=105)
 
     fenetre_rapport.mainloop()
+
+"""def Filerapport(nomdufichier):
+    myFile = open("(nomdufichier).txt", "w+")
+    for file in glob.glob("*.mov"):
+        print("Le nom du fichier est :", file)
+        media_info = MediaInfo.parse(file)
+        for track in media_info.tracks:
+            #########VIDEO################
+            if track.track_type == "Video":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                          "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                          "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                          " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n"
+                          .format(t=track))
+
+                ################GENERAL##################
+            elif track.track_type == "General":
+                pprint(track.track_type)
+                print(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+
+                ################AUDIO##################
+            elif track.track_type == "Audio":
+                pprint(track.track_type)
+                print(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                          .format(t=track))
+
+
+                ################OTHER##################
+            elif track.track_type == "Other":
+                pprint(track.track_type)
+                print(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+
+myFile = open("cuppa2py.txt", "w+")
+
+myFile.write("Le nom du fichier est :")
+
+myFile.write(" Format: {t.format}\n Format profile: {t.format_profile}\n Bit rate: {t.other_bit_rate}\n "
+                      "Width: {t.sampled_width} pixels\n Height: {t.sampled_height} pixels\n Frame rate: {t.other_frame_rate}\n "
+                      "Scan type: {t.other_scan_type}\n Scan order: {t.other_scan_order}\n"
+                      " Bit-(Pixel*Frame): {t.bits__pixel_frame}\n".format(t= track))
+
+myFile.write(" Format : {t.format}\n Format profile : {t.format_profile}\n".format(t=track))
+
+myFile.write(" Format: {t.format}\n Sampling rate: {t.other_sampling_rate}\n"
+                      .format(t=track))
+
+myFile.write(" TIM: {t.time_code_of_first_frame}\n".format(t=track))
+
+myFile.close()"""
 
 # Bouton Watchfolder
 folder_path = StringVar()
